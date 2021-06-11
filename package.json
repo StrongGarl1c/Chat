@@ -4,10 +4,17 @@
   "description": "Chat app",
   "main": "index.js",
   "scripts": {
-    "start": "cd server && npm run index.js",
+    "start": "node index.js",
     "dev": "cd client && npm start",
     "test": "jest"
   },
   "author": "Yaroslav Pitsur",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.9"
+  }
 }

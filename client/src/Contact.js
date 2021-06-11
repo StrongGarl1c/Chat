@@ -1,5 +1,6 @@
 class Contact {
-  constructor(name, chatHistory, image) {
+  constructor(id, name, chatHistory) {
+    this.id = id;
     this.name = name;
     this.chatHistory = chatHistory;
     this.color = Math.floor(Math.random() * 16777215).toString(16);

@@ -5,39 +5,75 @@ import Contacts from './Contacts';
 import Contact from './Contact';
 
 function App() {
-  const [contactList, setContactList] = useState([
-    new Contact('Alice Freeman', [
-      {
-        message: 'You are the worst!',
-        date: new Date('Jun 12 2017').toDateString(),
-      },
-    ]),
-    new Contact('Josefina', [
-      {
-        message: 'We are loosing money! Quick!',
-        date: new Date('Feb 18 2017').toDateString(),
-      },
-    ]),
-    new Contact('Velaquez', [
-      { message: 'hello', date: new Date('Feb 18 2017').toDateString() },
-    ]),
-  ]);
-  const [activeContact, setActiveContact] = useState(contactList[0]);
+  const [contactList, setContactList] = useState([]);
+  const [activeContact, setActiveContact] = useState(
+    'Select a chat to start messaging',
+  );
 
-  function addChatHistory(message) {
-    setContactList((prevState) => {
-      return prevState.map((item) =>
-        item.name === activeContact.name
-          ? {
-              ...item,
-              chatHistory: [
-                ...item.chatHistory,
-                { message, date: new Date().toDateString() },
-              ],
-            }
-          : item,
-      );
-    });
+  useEffect(() => {
+    async function getContacts() {
+      try {
+        const res = await fetch('http://localhost:5000/api');
+        const data = await res.json();
+        const list = data.map(
+          (contact) =>
+            new Contact(contact._id, contact.name, contact.chatHistory),
+        );
+        setContactList(list);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getContacts();
+  }, []);
+
+  function sendMessage(message) {
+    function addMessage(newMessage, fromWhom) {
+      setContactList((prevState) => {
+        return prevState.map((item) =>
+          item.id === activeContact.id
+            ? {
+                ...item,
+                chatHistory: [
+                  ...item.chatHistory,
+                  {
+                    message: newMessage,
+                    date: new Date().toDateString(),
+                    from: fromWhom,
+                  },
+                ],
+              }
+            : item,
+        );
+      });
+    }
+    addMessage(message, 'You');
+
+    async function sendMessageToDatabase() {
+      try {
+        const res = await fetch('http://localhost:5000/api', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: activeContact.id,
+            newMessage: {
+              message,
+              date: new Date().toDateString(),
+              from: activeContact.name,
+            },
+          }),
+        });
+        const msg = await res.json();
+        setTimeout(() => {
+          addMessage(msg, activeContact.name);
+        }, Math.round(Math.random() * (15 - 10) + 10) * 1000);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    sendMessageToDatabase();
   }
 
   const selectActiveContact = useCallback((contact) => {
@@ -45,9 +81,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setActiveContact(
-      contactList.find((item) => item.name === activeContact.name),
-    );
+    function getActiveContact() {
+      const user = contactList.find((item) => item.id === activeContact.id);
+      if (user) {
+        setActiveContact(user);
+      }
+    }
+    getActiveContact();
   }, [contactList, activeContact]);
 
   return (
@@ -57,12 +97,7 @@ function App() {
         selectActiveContact={selectActiveContact}
         contactList={contactList}
       />
-
-      <Chatbox
-        addChatHistory={addChatHistory}
-        activeContact={activeContact}
-        chatHistory={activeContact.chatHistory}
-      />
+      <Chatbox sendMessage={sendMessage} activeContact={activeContact} />
     </>
   );
 }
