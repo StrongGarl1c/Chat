@@ -1,8 +1,8 @@
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
 import Chatbox from './Chatbox';
-import Contacts from './Contacts';
 import Contact from './Contact';
+import Contactsbox from './Contactsbox';
 
 function App() {
   const [contactList, setContactList] = useState([]);
@@ -92,8 +92,7 @@ function App() {
 
   return (
     <>
-      <h2>Chats</h2>
-      <Contacts
+      <Contactsbox
         selectActiveContact={selectActiveContact}
         contactList={contactList}
       />
