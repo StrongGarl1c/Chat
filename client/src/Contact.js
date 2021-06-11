@@ -21,6 +21,7 @@ class Contact {
         {this.name[0].toUpperCase()}
       </div>
     );
+    this.newMessages = 0;
   }
 }
 

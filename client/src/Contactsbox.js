@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Contactsbox({ selectActiveContact, contactList }) {
+function Contactsbox({ selectActiveContact, contactList, clearNewMessages }) {
   const [search, setSearch] = useState('');
 
   function handleSearchInput(e) {
@@ -45,7 +45,9 @@ function Contactsbox({ selectActiveContact, contactList }) {
                   <div className="contacts__name">
                     {contact.name}
                     <br />
-                    {`${lastMessage.message} ${lastMessage.date}`}
+                    {`${lastMessage.message} ${lastMessage.date} ${
+                      contact.newMessages > 0 ? contact.newMessages : ''
+                    }`}
                   </div>
                   <hr />
                 </div>
@@ -61,12 +63,20 @@ function Contactsbox({ selectActiveContact, contactList }) {
               const lastMessage =
                 contact.chatHistory[contact.chatHistory.length - 1];
               return (
-                <div key={index} onClick={() => selectActiveContact(contact)}>
+                <div
+                  key={index}
+                  onClick={() => {
+                    selectActiveContact(contact);
+                    clearNewMessages(contact.id);
+                  }}
+                >
                   {contact.image}
                   <div className="contacts__name">
                     {contact.name}
                     <br />
-                    {`${lastMessage.message} ${lastMessage.date}`}
+                    {`${lastMessage.message} ${lastMessage.date} ${
+                      contact.newMessages > 0 ? contact.newMessages : ''
+                    }`}
                   </div>
                   <hr />
                 </div>

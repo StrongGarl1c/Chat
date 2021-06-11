@@ -9,6 +9,7 @@ function App() {
   const [activeContact, setActiveContact] = useState(
     'Select a chat to start messaging',
   );
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     async function getContacts() {
@@ -68,6 +69,9 @@ function App() {
         const msg = await res.json();
         setTimeout(() => {
           addMessage(msg, activeContact.name);
+          setNotification('');
+          setNotification(activeContact.id);
+          // addNotification(activeContact.id);
         }, Math.round(Math.random() * (15 - 10) + 10) * 1000);
       } catch (error) {
         console.error(error);
@@ -90,11 +94,45 @@ function App() {
     getActiveContact();
   }, [contactList, activeContact]);
 
+  useEffect(() => {
+    function addNotification() {
+      if (notification && activeContact.id !== notification) {
+        setContactList((prevState) => {
+          return prevState.map((contact) =>
+            contact.id === notification
+              ? {
+                  ...contact,
+                  newMessages: contact.newMessages + 1,
+                }
+              : contact,
+          );
+        });
+        return;
+      }
+    }
+    addNotification();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notification]);
+
+  function clearNewMessages(id) {
+    setContactList((prevState) => {
+      return prevState.map((contact) =>
+        contact.id === id
+          ? {
+              ...contact,
+              newMessages: 0,
+            }
+          : contact,
+      );
+    });
+  }
+
   return (
     <>
       <Contactsbox
         selectActiveContact={selectActiveContact}
         contactList={contactList}
+        clearNewMessages={clearNewMessages}
       />
       <Chatbox sendMessage={sendMessage} activeContact={activeContact} />
     </>
