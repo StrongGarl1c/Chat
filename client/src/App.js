@@ -1,4 +1,3 @@
-import './App.css';
 import { useState, useEffect, useCallback } from 'react';
 import Chatbox from './Chatbox';
 import Contact from './Contact';
@@ -10,6 +9,7 @@ function App() {
     'Select a chat to start messaging',
   );
   const [notification, setNotification] = useState('');
+  // const [showContacts, setShowContacts] = useState(true);
 
   useEffect(() => {
     async function getContacts() {
@@ -62,7 +62,7 @@ function App() {
             newMessage: {
               message,
               date: new Date().toDateString(),
-              from: activeContact.name,
+              from: 'You',
             },
           }),
         });
@@ -71,7 +71,6 @@ function App() {
           addMessage(msg, activeContact.name);
           setNotification('');
           setNotification(activeContact.id);
-          // addNotification(activeContact.id);
         }, Math.round(Math.random() * (15 - 10) + 10) * 1000);
       } catch (error) {
         console.error(error);
@@ -126,6 +125,15 @@ function App() {
       );
     });
   }
+
+  // if (window.matchMedia('(max-width: 700px)').matches) {
+  //   // less then 700
+  //   console.log(1);
+  //   // setShowContacts(false);
+  // } else {
+  //   // bigger then 700
+  //   console.log(2);
+  // }
 
   return (
     <>

@@ -1,9 +1,17 @@
+export function getRandomColor() {
+  const color = Math.floor(Math.random() * 16777215).toString(16);
+  if (color.length > 5) {
+    return `#${color}`;
+  } else {
+    return getRandomColor();
+  }
+}
+
 class Contact {
   constructor(id, name, chatHistory) {
     this.id = id;
     this.name = name;
     this.chatHistory = chatHistory;
-    this.color = Math.floor(Math.random() * 16777215).toString(16);
     this.image = (
       <div
         style={{
@@ -12,7 +20,7 @@ class Contact {
           borderRadius: '50%',
           color: 'white',
           textShadow: '-1px 0 black',
-          backgroundColor: `#${this.color}`,
+          backgroundColor: getRandomColor(),
           textAlign: 'center',
           display: 'table-cell',
           verticalAlign: 'middle',
