@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000;
 
 app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
 app.use(express.json());
-app.use(express.static('build/index.html'));
+app.use('/', express.static('./client/build'));
 
 // route paths
 const index = require('./routes/index');
