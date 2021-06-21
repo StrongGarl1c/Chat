@@ -22,6 +22,10 @@ body {
   position: relative;
 }
 
+.chatbox__chat {
+  min-height: 80vh;
+}
+
 .contactsbox h2 {
   color: #79bbd9;
   padding: 20px;
@@ -59,12 +63,14 @@ input {
   border: outset 1px gray;
 }
 
+.chatbox_message_wrapper {
+  margin-bottom: 25px;
+}
+
 .chatbox__message__outcoming {
-  display: grid;
-  grid-template-columns: auto;
-  justify-content: end;
-  grid-gap: 5px;
-  margin: 15px 10px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 10px;
 }
 
 .chatbox__message__outcoming__text {
@@ -78,6 +84,7 @@ input {
   background-color: inherit;
   color: #b4b4b4;
   text-align: end;
+  margin: 0 20px;
 }
 
 .chatbox__message__incoming {
@@ -98,14 +105,14 @@ input {
 }
 
 .chatbox__message__incoming__date {
-  grid-column: 1 / 4;
   background-color: inherit;
   color: #b4b4b4;
+  margin: 0 20px;
 }
 
 .contact__wrapper {
   display: grid;
-  grid-template-columns: max-content auto max-content;
+  grid-template-columns: max-content min-content auto;
   grid-gap: 10px;
   padding: 20px;
   border-bottom: outset 1px gray;
@@ -140,7 +147,7 @@ h4 {
 
 .chatbox__active__contact {
   display: grid;
-  grid-template-columns: max-content auto;
+  grid-template-columns: max-content auto auto;
   justify-content: start;
   padding: 20px;
   background-color: #f5f5f5;
@@ -151,6 +158,17 @@ h4 {
   left: 0;
 }
 
+.chatbox__back_arrow {
+  visibility: hidden;
+  font-size: larger;
+  align-self: center;
+}
+
+.chatbox__back_arrow:hover:active {
+  color: red;
+  cursor: pointer;
+}
+
 .chatbox form {
   position: sticky;
   bottom: 0;
@@ -159,14 +177,16 @@ h4 {
   display: flex;
 }
 
-.chatbox__active__contact h4 {
+.chatbox__active__contact p,
+h4 {
   padding: 0;
   margin: 0;
   align-self: center;
+  width: initial;
 }
 
 .contactsbox form {
-  min-width: 450px;
+  min-width: 500px;
   position: relative;
   display: flex;
   align-items: center;
@@ -189,7 +209,7 @@ h4 {
   background-color: initial;
 }
 
-.chatbox button:hover {
+.chatbox button:hover:active {
   color: red;
 }
 
@@ -202,13 +222,32 @@ h4 {
 }
 
 @media only screen and (max-width: 700px) {
-  body {
-    background-color: lightblue;
-  }
   #root {
     grid-template-columns: auto;
   }
+
+  body {
+    overflow: hidden;
+  }
+
   .contactsbox {
+    overflow: hidden auto;
+  }
+  .chatbox__back_arrow {
+    visibility: visible;
+  }
+
+  .chatbox {
     overflow: auto;
+  }
+
+  .contact__wrapper__text p,
+  h4 {
+    width: 150px;
+  }
+
+  .chatbox__active__contact p,
+  h4 {
+    width: initial;
   }
 }

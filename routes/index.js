@@ -32,7 +32,7 @@ router.post('/', async function (req, res) {
     const database = client.db('reenbit');
     const collection = database.collection('contacts');
 
-    const { id, newMessage } = req.body;
+    const { id, newMessage, activeContact } = req.body;
 
     await collection.updateOne(
       {
@@ -52,8 +52,8 @@ router.post('/', async function (req, res) {
         $push: {
           chatHistory: {
             message: joke.data.value,
-            date: new Date().toDateString(),
-            from: newMessage.fromWhom,
+            date: Date.parse(new Date()),
+            from: activeContact,
           },
         },
       },

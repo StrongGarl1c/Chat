@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { IoSendOutline } from 'react-icons/io5';
-import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { AiOutlineCheckCircle, AiOutlineArrowUp } from 'react-icons/ai';
 
 function Chatbox({ sendMessage, activeContact }) {
   const [message, setMessage] = useState('');
@@ -42,30 +42,37 @@ function Chatbox({ sendMessage, activeContact }) {
               </div>
             </div>
             <h4>{activeContact.name}</h4>
+            <div
+              className="chatbox__back_arrow"
+              onClick={() => window.document.body.scrollIntoView()}
+            >
+              <AiOutlineArrowUp />
+            </div>
           </div>
-          <div>
+          <div className="chatbox__chat">
             {activeContact.chatHistory.map((item, index) => {
               return (
-                <div
-                  key={index}
-                  className={
-                    item.from === 'You'
-                      ? 'chatbox__message__outcoming'
-                      : 'chatbox__message__incoming'
-                  }
-                >
-                  {item.from !== 'You' ? (
-                    <div>{activeContact.image}</div>
-                  ) : null}
-                  <p
+                <div key={index} className="chatbox_message_wrapper">
+                  <div
                     className={
                       item.from === 'You'
-                        ? 'chatbox__message__outcoming__text'
-                        : 'chatbox__message__incoming__text'
+                        ? 'chatbox__message__outcoming'
+                        : 'chatbox__message__incoming'
                     }
                   >
-                    {item.message}
-                  </p>
+                    {item.from !== 'You' ? (
+                      <div>{activeContact.image}</div>
+                    ) : null}
+                    <p
+                      className={
+                        item.from === 'You'
+                          ? 'chatbox__message__outcoming__text'
+                          : 'chatbox__message__incoming__text'
+                      }
+                    >
+                      {item.message}
+                    </p>
+                  </div>
                   <p
                     className={
                       item.from === 'You'
@@ -73,7 +80,7 @@ function Chatbox({ sendMessage, activeContact }) {
                         : 'chatbox__message__incoming__date'
                     }
                   >
-                    {item.date}
+                    {new Date(item.date).toLocaleString()}
                   </p>
                 </div>
               );
@@ -82,17 +89,20 @@ function Chatbox({ sendMessage, activeContact }) {
         </>
       )}
       {typeof activeContact !== 'string' ? (
-        <form onSubmit={onSubmit} ref={chatEnd}>
-          <input
-            value={message}
-            placeholder="Type your message"
-            onChange={handleInput}
-            autoFocus
-          />
-          <button type="submit">
-            <IoSendOutline />
-          </button>
-        </form>
+        <>
+          <div ref={chatEnd}></div>
+          <form onSubmit={onSubmit}>
+            <input
+              value={message}
+              placeholder="Type your message"
+              onChange={handleInput}
+              autoFocus
+            />
+            <button type="submit">
+              <IoSendOutline />
+            </button>
+          </form>
+        </>
       ) : null}
     </div>
   );

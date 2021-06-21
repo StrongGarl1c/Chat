@@ -9,7 +9,6 @@ function App() {
     'Select a chat to start messaging',
   );
   const [notification, setNotification] = useState('');
-  // const [showContacts, setShowContacts] = useState(true);
 
   useEffect(() => {
     async function getContacts() {
@@ -39,7 +38,7 @@ function App() {
                   ...item.chatHistory,
                   {
                     message: newMessage,
-                    date: new Date().toDateString(),
+                    date: new Date(),
                     from: fromWhom,
                   },
                 ],
@@ -61,8 +60,9 @@ function App() {
             id: activeContact.id,
             newMessage: {
               message,
-              date: new Date().toDateString(),
+              date: Date.parse(new Date()),
               from: 'You',
+              activeContact: activeContact.name,
             },
           }),
         });
@@ -125,15 +125,6 @@ function App() {
       );
     });
   }
-
-  // if (window.matchMedia('(max-width: 700px)').matches) {
-  //   // less then 700
-  //   console.log(1);
-  //   // setShowContacts(false);
-  // } else {
-  //   // bigger then 700
-  //   console.log(2);
-  // }
 
   return (
     <>
