@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     async function getContacts() {
       try {
-        const res = await fetch('http://localhost:5000/api');
+        const res = await fetch('/api');
         const data = await res.json();
         const list = data.map(
           (contact) =>
@@ -51,7 +51,7 @@ function App() {
 
     async function sendMessageToDatabase() {
       try {
-        const res = await fetch('http://localhost:5000/api', {
+        const res = await fetch('/api', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
