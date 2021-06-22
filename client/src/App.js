@@ -126,6 +126,10 @@ function App() {
     });
   }
 
+  useEffect(() => {
+    window.history.scrollRestoration = 'manual';
+  }, []);
+
   return (
     <>
       <Contactsbox

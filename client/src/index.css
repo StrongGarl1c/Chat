@@ -164,7 +164,8 @@ h4 {
   align-self: center;
 }
 
-.chatbox__back_arrow:hover:active {
+.chatbox__back_arrow:hover,
+.chatbox__back_arrow:active {
   color: red;
   cursor: pointer;
 }
@@ -209,7 +210,11 @@ h4 {
   background-color: initial;
 }
 
-.chatbox button:hover:active {
+.chatbox button:hover {
+  color: red;
+}
+
+.chatbox button:active {
   color: red;
 }
 
@@ -218,7 +223,10 @@ h4 {
 }
 
 .chatbox__placeholder {
-  text-align: center;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media only screen and (max-width: 700px) {
